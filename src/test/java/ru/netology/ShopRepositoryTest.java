@@ -32,4 +32,31 @@ public class ShopRepositoryTest {
         Product[] actual = repo.removeById(2);
         Assertions.assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void testNotAddSuccess() {
+        ShopRepository repo = new ShopRepository();
+        repo.add(item1);
+        repo.add(item2);
+        repo.add(item3);
+        Product item4 = new Product(3, "Морковь", 50);
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            repo.add(item4);
+        });
+    }
+
+    @Test
+    public void testAddSuccess() {
+        ShopRepository repo = new ShopRepository();
+        repo.add(item1);
+        repo.add(item2);
+        repo.add(item3);
+        Product item4 = new Product(4, "Морковь", 50);
+        repo.add(item4);
+
+        Product[] expected = {item1, item2, item3, item4};
+        Product[] actual = repo.findAll();
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
